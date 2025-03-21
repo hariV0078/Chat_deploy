@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import google.generativeai as genai  # Corrected import
+from google import genai  # Corrected import
 from groq import Groq
 from pydantic import BaseModel
 from typing import Optional
