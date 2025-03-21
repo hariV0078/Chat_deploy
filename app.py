@@ -29,7 +29,7 @@ GOOGLE_API_KEY = "AIzaSyB9_uEfeyLvJ1O-PrT8Qlj8PlOG-p_MvsU"
 GROQ_API_KEY = "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"
 
 # Initialize API Clients
-genai.configure(api_key=GOOGLE_API_KEY)  # Proper initialization
+client = genai.Client(api_key=GOOGLE_API_KEY)  # Proper initialization
 groq_client = Groq(api_key=GROQ_API_KEY)
 
 # Define system prompt properly
@@ -62,14 +62,14 @@ class ChatbotRequest(BaseModel):
 @app.post("/chatbot")
 async def chatbot(request: ChatbotRequest):
     try:
-        # Initialize model
-        model = genai.GenerativeModel('gemini-pro')  # Use correct model name
+        #  # Use correct model name
         
         # Structure the prompt correctly
         full_prompt = f"{SYSTEM_PROMPT}\n\nUser Query: {request.user_query}\nAdditional Info: {request.user_info or ''}"
         
-        # Generate response
-        response = model.generate_content(full_prompt)
+        response = client.models.generate_content(
+            model="gemini-2.0-flash-exp",contents=[full_prompt]
+        )
         
         return JSONResponse(content={"response": response.text})
     except Exception as e:
